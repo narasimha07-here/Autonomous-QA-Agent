@@ -35,11 +35,11 @@ async def upload_documents(files: List[UploadFile] = File(...)):
         # Skip HTML
         if file.filename.endswith('.html'):
             continue
-    file_path = os.path.join(UPLOAD_DIR, file.filename)
-    with open(file_path, "wb") as buffer:
+        file_path = os.path.join(UPLOAD_DIR, file.filename)
+        with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
             saved_files.append(file_path)
-
+            
     return JSONResponse({
             "status": "success",
             "message": f"Uploaded {len(saved_files)} files",
