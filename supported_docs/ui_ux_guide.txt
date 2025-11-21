@@ -1,0 +1,222 @@
+# E-Commerce Checkout System - UI/UX Guidelines
+
+## Form Input Styling
+
+### Text Input Fields
+- Font size: 14px
+- Padding: 12px
+- Border: 1px solid #cccccc
+- Border radius: 4px
+- Background color: #ffffff
+- Placeholder text color: #999999
+- Focus state: Border color changes to #0066cc (blue)
+- Disabled state: Background color #f5f5f5, cursor not-allowed
+
+### Input Validation Indicators
+- Valid input: Green checkmark icon (✓)
+- Invalid input: Red X icon (✗)
+- Required field indicator: Red asterisk (*) next to label
+
+### Label Styling
+- Font size: 12px
+- Font weight: bold
+- Color: #333333
+- Margin bottom: 6px
+- All labels must be associated with input fields using <label> tag
+
+## Error Messages
+
+### Error Message Display
+- Color: #cc0000 (red)
+- Font size: 12px
+- Display location: Below the input field
+- Margin top: 4px
+- Font style: normal
+- Example messages:
+  - "This field is required"
+  - "Please enter a valid email address"
+  - "Address must be at least 10 characters"
+  - "Invalid discount code"
+
+### Error Styling
+- Background: #ffcccc (light red)
+- Padding: 8px
+- Border left: 3px solid #cc0000
+- Border radius: 2px
+
+## Buttons
+
+### Primary Button (Pay Now)
+- Background color: #00aa00 (green)
+- Text color: #ffffff (white)
+- Font size: 16px
+- Font weight: bold
+- Padding: 14px 32px
+- Border: none
+- Border radius: 6px
+- Cursor: pointer
+- Hover state: Background color #009900 (darker green)
+- Active state: Background color #007700 (even darker)
+- Disabled state: Background color #cccccc, cursor not-allowed
+
+### Secondary Buttons (Add to Cart, Remove)
+- Background color: #0066cc (blue)
+- Text color: #ffffff (white)
+- Font size: 14px
+- Padding: 10px 20px
+- Border: 1px solid #0052a3
+- Border radius: 4px
+- Hover state: Background color #0052a3
+
+### Danger Button (Remove Item)
+- Background color: #cc0000 (red)
+- Text color: #ffffff (white)
+- Hover state: Background color #990000 (darker red)
+
+## Form Sections
+
+### Section Headers
+- Font size: 18px
+- Font weight: bold
+- Color: #333333
+- Margin bottom: 16px
+- Border bottom: 2px solid #eeeeee
+- Padding bottom: 8px
+
+### Form Layout
+- Maximum width: 600px
+- Margin: 0 auto
+- Padding: 20px
+- Background: #fafafa
+- Border radius: 8px
+
+## Success Messages
+
+### Payment Success Message
+- Message text: "Payment Successful!"
+- Color: #00aa00 (green)
+- Font size: 18px
+- Font weight: bold
+- Background: #ccffcc (light green)
+- Padding: 16px
+- Border left: 4px solid #00aa00
+- Border radius: 4px
+- Display duration: Persistent until page refresh
+- Text alignment: center
+
+## Cart Display
+
+### Product Cards
+- Width: 100% or max-content
+- Padding: 12px
+- Border: 1px solid #dddddd
+- Margin bottom: 12px
+- Border radius: 4px
+- Background: #ffffff
+
+### Cart Summary
+- Font size: 16px
+- Font weight: bold
+- Background: #f0f0f0
+- Padding: 16px
+- Border radius: 4px
+- Margin top: 20px
+
+### Price Display
+- Font size: 14px
+- Color: #333333
+- Alignment: right
+- Currency symbol: $ (USD)
+- Decimal places: 2 (e.g., $29.99)
+
+## Radio Buttons (Shipping & Payment)
+
+### Radio Button Styling
+- Size: 18px × 18px
+- Margin right: 8px
+- Label next to button (inline)
+- Vertical spacing between options: 12px
+
+### Selected State
+- Radio button: Filled circle
+- Label text: Bold
+
+### Unselected State
+- Radio button: Empty circle
+- Label text: Normal weight
+
+## Number Input (Quantity)
+
+### Quantity Field
+- Width: 60px
+- Type: number
+- Min: 1
+- Max: 10
+- Default: 1
+- Buttons: + and - buttons on sides
+- Font size: 14px
+
+## Discount Code Input
+
+### Discount Code Field
+- Width: 200px
+- Placeholder: "Enter discount code"
+- Button next to field: "Apply"
+- Button styling: Same as secondary button (blue)
+- On success: Display "Discount Applied: -$XX.XX"
+- On failure: Display error message in red
+
+## Overall Page Layout
+
+### Color Scheme
+- Primary color: #0066cc (blue)
+- Secondary color: #00aa00 (green)
+- Error color: #cc0000 (red)
+- Text color: #333333
+- Background: #ffffff
+- Accent gray: #f5f5f5
+
+### Typography
+- Font family: Arial, sans-serif
+- Base font size: 14px
+- Line height: 1.5
+
+### Spacing
+- Standard margin: 16px
+- Standard padding: 12px
+- Field margin bottom: 16px
+- Section spacing: 24px
+
+## Responsive Design
+
+### Mobile (< 768px)
+- Full width form
+- Buttons: 100% width
+- Font size: 16px (to prevent zoom on input focus)
+- Padding: 16px
+- Single column layout
+
+### Desktop (>= 768px)
+- Max width: 600px
+- Centered on page
+- Buttons: 200px minimum width
+- Two-column layout where applicable
+
+## Accessibility Requirements
+
+### Keyboard Navigation
+- Tab order: Top to bottom, left to right
+- All buttons must be keyboard accessible
+- Enter key should submit forms
+- Escape key should cancel operations
+
+### Screen Reader Support
+- All form labels must have associated <label> tags
+- Error messages must be announced
+- Success messages must be announced
+- Form sections should be grouped with <fieldset>
+
+### ARIA Attributes
+- Use aria-label for icon buttons
+- Use aria-describedby for error messages
+- Use aria-required for mandatory fields

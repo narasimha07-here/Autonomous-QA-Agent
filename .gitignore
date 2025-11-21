@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/*
+env/
+ENV/
+
+# Vector DB
+data/vector_db/
+backend/uploads/
+backend/html_files/
+*.faiss
+*.pkl
+
+# Uploads
+data/uploads/*
+!data/uploads/.gitkeep
+supported_docs/index.html
+supported_docs/product_specs.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local

@@ -1,0 +1,272 @@
+{
+  "api_endpoints": [
+    {
+      "endpoint": "GET /products",
+      "description": "Retrieve list of all available products",
+      "method": "GET",
+      "request": {
+        "parameters": {}
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "products": [
+            {
+              "id": "prod_001",
+              "name": "Laptop",
+              "price": 999.99,
+              "in_stock": true,
+              "max_quantity": 10
+            },
+            {
+              "id": "prod_002",
+              "name": "Wireless Mouse",
+              "price": 29.99,
+              "in_stock": true,
+              "max_quantity": 10
+            },
+            {
+              "id": "prod_003",
+              "name": "USB-C Cable",
+              "price": 12.99,
+              "in_stock": true,
+              "max_quantity": 10
+            }
+          ]
+        }
+      },
+      "error_responses": {
+        "500": "Internal server error"
+      }
+    },
+    {
+      "endpoint": "POST /validate_coupon",
+      "description": "Validate discount coupon code",
+      "method": "POST",
+      "request": {
+        "body": {
+          "code": "string (required)",
+          "subtotal": "number (required)"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "valid": true,
+          "code": "SAVE15",
+          "discount_percentage": 15,
+          "discount_amount": 150.00,
+          "message": "Discount code applied successfully"
+        }
+      },
+      "error_responses": {
+        "400": {
+          "valid": false,
+          "message": "Invalid discount code",
+          "error_code": "INVALID_CODE"
+        },
+        "400_expired": {
+          "valid": false,
+          "message": "Discount code has expired",
+          "error_code": "EXPIRED_CODE"
+        }
+      },
+      "valid_codes": [
+        "SAVE10",
+        "SAVE15",
+        "SAVE20",
+        "WELCOME5"
+      ]
+    },
+    {
+      "endpoint": "POST /calculate_tax",
+      "description": "Calculate sales tax for order",
+      "method": "POST",
+      "request": {
+        "body": {
+          "subtotal": "number (required)",
+          "discount_amount": "number (optional, default: 0)",
+          "state": "string (required)"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "subtotal": 1000.00,
+          "discount_amount": 150.00,
+          "taxable_amount": 850.00,
+          "tax_rate": 0.10,
+          "tax_amount": 85.00,
+          "total": 935.00
+        }
+      },
+      "notes": "Tax rate is fixed at 10% for all states"
+    },
+    {
+      "endpoint": "POST /calculate_shipping",
+      "description": "Calculate shipping cost based on method",
+      "method": "POST",
+      "request": {
+        "body": {
+          "shipping_method": "string (required, values: 'standard' or 'express')",
+          "subtotal": "number (required)"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "method": "express",
+          "cost": 10.00,
+          "delivery_time": "1-2 business days",
+          "total_with_shipping": 945.00
+        }
+      },
+      "error_responses": {
+        "400": {
+          "message": "Invalid shipping method",
+          "error_code": "INVALID_METHOD"
+        }
+      },
+      "valid_methods": {
+        "standard": {
+          "cost": 0.00,
+          "delivery_time": "5-7 business days"
+        },
+        "express": {
+          "cost": 10.00,
+          "delivery_time": "1-2 business days"
+        }
+      }
+    },
+    {
+      "endpoint": "POST /validate_email",
+      "description": "Validate email address format",
+      "method": "POST",
+      "request": {
+        "body": {
+          "email": "string (required)"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "valid": true,
+          "email": "user@example.com",
+          "message": "Email is valid"
+        }
+      },
+      "error_responses": {
+        "400": {
+          "valid": false,
+          "message": "Invalid email format",
+          "error_code": "INVALID_EMAIL"
+        }
+      },
+      "validation_rules": "Must contain @ symbol and valid domain"
+    },
+    {
+      "endpoint": "POST /validate_address",
+      "description": "Validate address fields",
+      "method": "POST",
+      "request": {
+        "body": {
+          "street_address": "string (required, min: 10 chars)",
+          "city": "string (required, min: 2 chars)",
+          "state": "string (required, min: 2 chars)",
+          "zip_code": "string (required, min: 3 chars)",
+          "country": "string (required, min: 2 chars)"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "valid": true,
+          "message": "Address is valid"
+        }
+      },
+      "error_responses": {
+        "400": {
+          "valid": false,
+          "message": "Address validation failed",
+          "error_code": "INVALID_ADDRESS",
+          "details": "Street address must be at least 10 characters"
+        }
+      }
+    },
+    {
+      "endpoint": "POST /submit_order",
+      "description": "Submit order for payment processing",
+      "method": "POST",
+      "request": {
+        "body": {
+          "full_name": "string (required, min: 3 chars)",
+          "email": "string (required, valid email)",
+          "street_address": "string (required, min: 10 chars)",
+          "city": "string (required)",
+          "state": "string (required)",
+          "zip_code": "string (required)",
+          "country": "string (required)",
+          "shipping_method": "string (required: 'standard' or 'express')",
+          "payment_method": "string (required: 'credit_card' or 'paypal')",
+          "items": [
+            {
+              "product_id": "string",
+              "quantity": "number",
+              "price": "number"
+            }
+          ],
+          "subtotal": "number",
+          "discount_code": "string (optional)",
+          "discount_amount": "number (optional)",
+          "tax_amount": "number",
+          "shipping_cost": "number",
+          "total": "number"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "success": true,
+          "order_id": "ORD-2025-11-19-001",
+          "message": "Payment Successful!",
+          "order_details": {
+            "created_at": "2025-11-19T10:30:00Z",
+            "status": "completed",
+            "total": 945.00
+          }
+        }
+      },
+      "error_responses": {
+        "400": {
+          "success": false,
+          "message": "Order validation failed",
+          "error_code": "VALIDATION_ERROR",
+          "details": "All required fields must be provided"
+        },
+        "402": {
+          "success": false,
+          "message": "Payment failed. Please try again.",
+          "error_code": "PAYMENT_ERROR"
+        },
+        "500": {
+          "success": false,
+          "message": "Internal server error",
+          "error_code": "SERVER_ERROR"
+        }
+      },
+      "validation_rules": {
+        "cart_items": "Minimum 1 item required",
+        "total_amount": "Must be greater than $0.01",
+        "all_fields": "All user information fields required",
+        "shipping": "Shipping method must be selected",
+        "payment": "Payment method must be selected"
+      }
+    }
+  ],
+  "authentication": {
+    "type": "None (public endpoint)",
+    "note": "This is a demo checkout system without authentication"
+  },
+  "base_url": "http://localhost:5000/api",
+  "version": "1.0"
+}
