@@ -19,7 +19,6 @@ backend/html_files/
 data/uploads/*
 !data/uploads/.gitkeep
 supported_docs/index.html
-supported_docs/product_specs.md
 
 # IDE
 .vscode/

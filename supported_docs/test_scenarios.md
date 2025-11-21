@@ -1,160 +1,162 @@
-# Test Scenarios for E-Commerce Checkout System
+# Test Scenarios – E-Shop Checkout System
 
-## Cart Management Tests
+This document outlines every major test scenario required to validate the complete functionality of the E-Shop Checkout page.  
+Each scenario describes **what must be tested**, **why it must be tested**, and the **expected system behavior**.
 
-### Positive Test Cases
-- **TC_CART_001**: Add single product to cart and verify item appears
-- **TC_CART_002**: Add multiple different products to cart
-- **TC_CART_003**: Increase quantity of product in cart
-- **TC_CART_004**: Decrease quantity of product in cart
-- **TC_CART_005**: Remove product from cart
-- **TC_CART_006**: Verify cart total is calculated correctly
-- **TC_CART_007**: Clear entire cart
+---
 
-### Negative Test Cases
-- **TC_CART_008**: Add quantity exceeding maximum (10 units)
-- **TC_CART_009**: Add quantity as 0
-- **TC_CART_010**: Add negative quantity
-- **TC_CART_011**: Try to checkout with empty cart
+## 1. Cart Management Scenarios
 
-## Discount Code Tests
+### TS-001: Add Valid Item to Cart
+Validate that a user can add any product (Laptop, Mouse, USB-C Cable) with a valid quantity (1–10).
 
-### Positive Test Cases
-- **TC_DISC_001**: Apply valid discount code SAVE10
-- **TC_DISC_002**: Apply valid discount code SAVE15
-- **TC_DISC_003**: Apply valid discount code SAVE20
-- **TC_DISC_004**: Apply valid discount code WELCOME5
-- **TC_DISC_005**: Verify discount percentage applied correctly
-- **TC_DISC_006**: Verify discount amount calculated correctly
-- **TC_DISC_007**: Verify tax calculated on discounted amount
+### TS-002: Reject Invalid Quantity
+If quantity <1 or >10, system must display error alert and the product must not be added.
 
-### Negative Test Cases
-- **TC_DISC_008**: Apply invalid discount code
-- **TC_DISC_009**: Apply discount code with special characters
-- **TC_DISC_010**: Apply discount code with lowercase (case-insensitivity)
-- **TC_DISC_011**: Apply multiple discount codes (should reject second one)
-- **TC_DISC_012**: Apply expired discount code
-- **TC_DISC_013**: Apply discount code to empty cart
+### TS-003: Update Cart Totals After Adding Product
+Subtotal, tax, discount (if any), and final total must recalculate immediately based on new cart state.
 
-## Shipping Tests
+### TS-004: Remove Item From Cart
+When user removes an item, it should be deleted from cart display and totals must reflect the change.
 
-### Positive Test Cases
-- **TC_SHIP_001**: Select Standard Shipping (Free)
-- **TC_SHIP_002**: Select Express Shipping ($10)
-- **TC_SHIP_003**: Verify Standard shipping adds $0 to total
-- **TC_SHIP_004**: Verify Express shipping adds $10 to total
-- **TC_SHIP_005**: Change shipping method and verify total updates
+### TS-005: Add Multiple Different Products
+Cart should reflect multiple unique SKUs along with their individual quantities and totals.
 
-### Negative Test Cases
-- **TC_SHIP_006**: Proceed to checkout without selecting shipping method
-- **TC_SHIP_007**: Select invalid shipping method
+---
 
-## User Information Validation Tests
+## 2. Discount Code Scenarios
 
-### Full Name Validation
-- **TC_NAME_001**: Enter valid full name (3+ characters)
-- **TC_NAME_002**: Enter name with 2 characters (invalid)
-- **TC_NAME_003**: Enter empty name field
-- **TC_NAME_004**: Enter name with special characters
-- **TC_NAME_005**: Enter name exceeding 50 characters
+### TS-006: Apply Valid Discount Code
+Valid codes: SAVE10, SAVE15, SAVE20, WELCOME5  
+System must apply **correct percentage** and update totals.
 
-### Email Validation
-- **TC_EMAIL_001**: Enter valid email format (user@example.com)
-- **TC_EMAIL_002**: Enter email without @ symbol
-- **TC_EMAIL_003**: Enter email without domain
-- **TC_EMAIL_004**: Enter empty email field
-- **TC_EMAIL_005**: Enter email with spaces
-- **TC_EMAIL_006**: Verify error message displays for invalid email
+### TS-007: Reject Invalid Discount Code
+Invalid coupon should show red error message and discount must revert to 0.
 
-### Address Validation
-- **TC_ADDR_001**: Enter valid street address (10+ characters)
-- **TC_ADDR_002**: Enter street address with less than 10 characters
-- **TC_ADDR_003**: Enter valid city name
-- **TC_ADDR_004**: Enter empty city field
-- **TC_ADDR_005**: Enter valid state/province
-- **TC_ADDR_006**: Enter valid zip/postal code
-- **TC_ADDR_007**: Enter valid country
-- **TC_ADDR_008**: Verify all address fields are required
+### TS-008: Apply Discount After Cart Update  
+Discount must remain active if cart changes — totals must recalculate correctly.
 
-## Payment Method Tests
+### TS-009: Apply Discount After Shipping Method Change  
+Changing shipping (Standard ↔ Express) must not reset the coupon.
 
-### Positive Test Cases
-- **TC_PAY_001**: Select Credit Card payment method
-- **TC_PAY_002**: Select PayPal payment method
-- **TC_PAY_003**: Verify selected payment method is highlighted
+### TS-010: Empty Input Discount Code
+If user clicks “Apply” with empty field, red error message should appear.
 
-### Negative Test Cases
-- **TC_PAY_004**: Proceed to checkout without selecting payment method
+---
 
-## Order Submission Tests
+## 3. Shipping Method Scenarios
 
-### Successful Submission
-- **TC_ORDER_001**: Submit complete order with all valid information
-- **TC_ORDER_002**: Verify "Payment Successful!" message displays
-- **TC_ORDER_003**: Verify order ID is generated
-- **TC_ORDER_004**: Verify cart is cleared after successful order
+### TS-011: Default Shipping Option
+Standard shipping should be selected by default and cost shown as $0.00.
 
-### Failed Submission
-- **TC_ORDER_005**: Submit order with missing required field (name)
-- **TC_ORDER_006**: Submit order with missing required field (email)
-- **TC_ORDER_007**: Submit order with missing required field (address)
-- **TC_ORDER_008**: Submit order with invalid email format
-- **TC_ORDER_009**: Submit order with empty cart
-- **TC_ORDER_010**: Verify appropriate error messages display for each validation failure
+### TS-012: Select Express Shipping
+Choosing Express must add $10 to total.
 
-## Price Calculation Tests
+### TS-013: Change Shipping After Cart Changes
+Totals must recalculate properly even if cart changes after selecting shipping.
 
-### Tax Calculation
-- **TC_TAX_001**: Verify tax calculated at 10% on subtotal
-- **TC_TAX_002**: Verify tax calculated on amount AFTER discount applied
-- **TC_TAX_003**: Verify tax rounded to 2 decimal places
-- **TC_TAX_004**: Verify final total = (Subtotal - Discount) + Tax + Shipping
+---
 
-### Total Amount Verification
-- **TC_TOTAL_001**: Verify total with no discount, standard shipping
-- **TC_TOTAL_002**: Verify total with discount, standard shipping
-- **TC_TOTAL_003**: Verify total with no discount, express shipping
-- **TC_TOTAL_004**: Verify total with discount and express shipping
+## 4. Billing & User Information Scenarios
 
-## UI/UX Tests
+### TS-014: Validate Required Fields
+Full Name, Email, Address, City, State, ZIP, Country are all required.
 
-### Error Message Display
-- **TC_UI_001**: Verify error messages display in red color
-- **TC_UI_002**: Verify error messages appear below respective input fields
-- **TC_UI_003**: Verify error messages have proper formatting
+### TS-015: Full Name Validation
+Input less than 3 characters must trigger error.
 
-### Button Styling
-- **TC_UI_004**: Verify "Pay Now" button is green
-- **TC_UI_005**: Verify "Add to Cart" buttons are blue
-- **TC_UI_006**: Verify buttons have proper hover states
-- **TC_UI_007**: Verify disabled buttons show cursor not-allowed
+### TS-016: Email Format Validation
+Invalid email format must show red error and prevent submission.
 
-### Form Validation Indicators
-- **TC_UI_008**: Verify red asterisk (*) displays next to required fields
-- **TC_UI_009**: Verify checkmark displays for valid input
-- **TC_UI_010**: Verify X mark displays for invalid input
+### TS-017: Address Validation
+Address fewer than 10 characters should trigger error.
 
-## Edge Cases
+### TS-018: ZIP Code Validations
+ZIP must not be empty and should reflect error state on invalid input.
 
-### Boundary Tests
-- **TC_EDGE_001**: Order with minimum value ($0.01)
-- **TC_EDGE_002**: Order with very large value ($99,999.99)
-- **TC_EDGE_003**: Add maximum quantity (10) of each product
-- **TC_EDGE_004**: Apply discount that reduces total to near $0.01
+### TS-019: Country Field Required Check  
+Country must not be blank—error should appear if missing.
 
-### Session Tests
-- **TC_SESSION_001**: Verify cart persists during single session
-- **TC_SESSION_002**: Verify cart clears after successful order
-- **TC_SESSION_003**: Verify form data persists during session
+---
 
-## Accessibility Tests
+## 5. Payment Method Scenarios
 
-### Keyboard Navigation
-- **TC_ACC_001**: Navigate form using Tab key
-- **TC_ACC_002**: Submit form using Enter key
-- **TC_ACC_003**: Verify all interactive elements are keyboard accessible
+### TS-020: Default Payment Method
+Credit Card must be selected by default.
 
-### Screen Reader Compatibility
-- **TC_ACC_004**: Verify all form labels are properly associated
-- **TC_ACC_005**: Verify error messages are announced to screen readers
-- **TC_ACC_006**: Verify success messages are announced to screen readers
+### TS-021: Change Payment Method
+Switching to PayPal must work correctly.
+
+---
+
+## 6. End-to-End Checkout Scenarios
+
+### TS-022: Successful Checkout With Valid Input
+User fills all fields correctly + cart has items → payment shows **“Payment Successful!”**
+
+### TS-023: Block Checkout on Invalid Form
+If any field is invalid, checkout must be blocked and success message must not appear.
+
+### TS-024: Block Checkout When Cart is Empty  
+If user submits form with empty cart → alert “Cart is empty”.
+
+### TS-025: Successful Checkout With Discount Applied  
+Correct discount must persist through entire checkout flow.
+
+### TS-026: Successful Checkout With Express Shipping  
+Final total should include express fee and success message shown.
+
+---
+
+## 7. UI / UX Scenarios
+
+### TS-027: Error Messages Display in Red  
+All validation errors must follow UI-UX guideline (red text + red bar + light red background).
+
+### TS-028: Success Box Display After Payment  
+Green success box must appear and hide:
+- product section  
+- discount section  
+- checkout form  
+
+### TS-029: Pay Now Button Styling  
+Button must be green and show hover darkening effect.
+
+### TS-030: Responsive Layout  
+Fields must stack vertically on screens < 768px.
+
+---
+
+## 8. Boundary & Negative Scenarios
+
+### TS-031: Quantity Boundary Values  
+Test qty=1 (min) and qty=10 (max).
+
+### TS-032: Extreme Invalid Quantity  
+Negative qty, 0, >10 must be rejected.
+
+### TS-033: Empty Form Submission  
+Press Pay Now without entering any values → required field errors must appear.
+
+### TS-034: Apply Multiple Discount Attempts  
+Only one valid coupon must be applied at a time.
+
+### TS-035: Refresh After Payment  
+After refresh, cart and discount status must reset to initial state.
+
+---
+
+## 9. System Behavior Scenarios
+
+### TS-036: Correct Tax Calculation  
+Tax must always be 10% of (subtotal − discount).
+
+### TS-037: Totals Should Update Reactively  
+Any change in cart, discount, or shipping must update totals instantly.
+
+### TS-038: JavaScript Error-Free Execution  
+Page console must show no JS errors during normal flows.
+
+---
+
+# End of Test Scenarios
