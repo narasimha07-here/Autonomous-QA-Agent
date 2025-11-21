@@ -4,32 +4,17 @@ An intelligent QA automation system that generates documentation-grounded test c
 
 ## Overview
 
-This project implements an **Autonomous QA Agent** that transforms project documentation and HTML source code into:
-
-1. **Documentation-Grounded Test Cases** - Comprehensive test plans based strictly on uploaded documents
-2. **Executable Selenium Scripts** - Python automation scripts with actual HTML selectors
-
-**Key Technology Stack:**
-- **Backend:** FastAPI
-- **Frontend:** Streamlit
-- **LLM:** Google Gemini 2.5 Flash
-- **Embeddings:** BAAI/bge-small-en-v1.5
-- **Vector DB:** ChromaDB
-- **Framework:** LangChain
+The **Autonomous QA Agent** is an intelligent automation tool designed to accelerate the Quality Assurance lifecycle. This system analyzes functional requirements and directly matches them with UI elements from your HTML source code. This approach eliminates the disconnect between requirements and testing by ensuring every generated test case is grounded in documentation, and every script uses real DOM selectors.
 
 ---
 
-## Features
+## Key Capabilities
 
-✅ **Document Ingestion** - Supports PDF, Markdown, TXT, JSON, HTML  
-✅ **RAG-Based Knowledge Base** - Semantic chunking with ChromaDB vector storage  
-✅ **Test Case Generation** - Structured test cases with positive/negative scenarios  
-✅ **Selenium Script Generation** - Production-ready Python scripts with unittest framework  
-✅ **HTML Selector Mining** - Automatic extraction of IDs, names, and classes  
-✅ **Document Grounding** - Every test case cites source documents (no hallucinations)  
-✅ **Download Scripts** - One-click download of generated .py files  
+- **📄 Doc-to-Test:** Converts PDFs, Markdown, and JSON documents into comprehensive positive and negative test scenarios.
+- **💻 HTML-to-Script:** Mines ID, Class, and Name attributes from HTML to build robust Selenium Python scripts that reflect your actual UI.
+- **🧠 Smart Context:** Uses ChromaDB vector search to prevent AI hallucinations by explicitly citing the specific source documents for each test case.
+- **⚡ Instant Execution:** Generates standard `unittest`-compatible Python files, ready for immediate download and execution.
 
----
 
 ## System Architecture
 
