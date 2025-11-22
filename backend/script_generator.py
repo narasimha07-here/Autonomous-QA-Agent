@@ -19,7 +19,7 @@ class ScriptGenerator:
 TEST CASE DETAILS:
 {json.dumps(test_case, indent=2)}
 
-FULL HTML STRUCTURE (use this to find EXACT selectors):
+FULL HTML STRUCTURE (Assign this string to a variable in the script):
 {html_content}
 
 EXTRACTED HTML ELEMENTS (quick reference):
@@ -29,55 +29,51 @@ RELEVANT DOCUMENTATION:
 {feature_context}
 
 REQUIREMENTS:
-1. Generate complete Python code with all necessary imports
-2. Use WebDriverWait for element interactions with explicit waits (15 seconds minimum)
-3. Include proper error handling, assertions, and logging
+1. Generate complete Python code with all necessary imports (including os, tempfile).
+2. Use WebDriverWait for element interactions with explicit waits (15 seconds minimum).
+3. Include proper error handling, assertions, and logging.
 4. Use appropriate selectors based on the ACTUAL HTML structure above:
    - Prefer ID selectors (By.ID)
    - Then NAME selectors (By.NAME)
    - Then CSS selectors (By.CSS_SELECTOR)
    - XPath as last resort
-5. Include comments for each major step linking to test case steps
-6. Make the script standalone and executable
+5. Include comments for each major step linking to test case steps.
+6. Make the script standalone and executable.
 7. CRITICAL: Use modern Selenium 4 syntax with the 'Service' class. 
    - DO NOT use 'executable_path'.
    - Implementation MUST be: 
      service = Service(ChromeDriverManager().install())
      driver = webdriver.Chrome(service=service)
-8. Handle form submissions, button clicks, and validations appropriately
-9. Include realistic test data generation
-10. Add meaningful assertions based on expected results from documentation
+8. Handle form submissions, button clicks, and validations appropriately.
+9. Include realistic test data generation.
+10. Add meaningful assertions based on expected results from documentation.
 11. CRITICAL: AVOID hardcoding expected numerical results. Extract values, parse floats, calculate in Python, and compare.
-CRITICAL STABILITY INSTRUCTIONS (To prevent TimeoutException):
-12. ALWAYS initialize the driver with options to maximize the window to ensure elements are visible.
+
+CRITICAL STABILITY INSTRUCTIONS:
+12. ALWAYS initialize the driver with options to maximize the window:
     ```python
     options = webdriver.ChromeOptions()
     options.add_argument("--start-maximized")
     options.add_argument("--disable-notifications")
     driver = webdriver.Chrome(service=service, options=options)
     ```
-13. Before interacting with elements, add a check to ensure the page is fully loaded:
-    ```python
-    WebDriverWait(self.driver, 10).until(
-        lambda d: d.execute_script("return document.readyState") == "complete"
-    )
-    ```
-14. Before clicking buttons or inputs that might be lower on the page, force a scroll to the element:
-    ```python
-    element = wait.until(EC.presence_of_element_located((By.ID, "example")))
-    self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
-    element.click()
-    ```
-16. dont use local HTML file path like that while generating script.write direct html code based on the ACTUAL HTML structure
+13. Before interacting with elements, add a check to ensure the page is fully loaded.
+14. Before clicking buttons or inputs that might be lower on the page, force a scroll to the element using `scrollIntoView`.
+
+16. CRITICAL - HTML LOADING STRATEGY (Fix for Blank Page Error):
+    - DO NOT use `data:text/html` URLs in `driver.get()`. This causes browser security errors and blank pages.
+    - Instead, your script MUST implement the `setUp` method to:
+      1. Create a temporary file using Python's `tempfile` module: `self.temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.html', mode='w', encoding='utf-8')`
+      2. Write the HTML content variable into this file.
+      3. Close the file.
+      4. Load the file in the driver using: `self.driver.get(f'file://{{self.temp_file.name}}')`
+    - Implement the `tearDown` method to close the driver AND remove the temporary file using `os.remove(self.temp_file.name)`.
 
 SPECIFIC INSTRUCTIONS:
 - Map each test case step to actual Selenium actions
 - Use EXACT selectors from the HTML structure provided above
 - Include proper waiting mechanisms for dynamic content
-- Handle form validations and error messages
-- Generate appropriate test data for input fields
 - Verify expected behavior based on product documentation
-- Include setup() and teardown() methods for WebDriver lifecycle
 - Use unittest.TestCase class structure
 - Add descriptive method names and docstrings
 
@@ -144,7 +140,6 @@ Generate ONLY the Python code without any explanations outside the code comments
         return elements
     
     def extract_code(self, script: str) -> str:
-
         if "```python" in script:
             try:
                 script = script.split("```python")[1].split("```")[0].strip()
@@ -162,6 +157,8 @@ Generate ONLY the Python code without any explanations outside the code comments
 
     def validate_and_clean_script(self, script: str) -> str:
         required_imports = [
+            "import os",
+            "import tempfile",
             "from selenium import webdriver",
             "from selenium.webdriver.common.by import By",
             "from selenium.webdriver.support.ui import WebDriverWait",
@@ -177,8 +174,12 @@ Generate ONLY the Python code without any explanations outside the code comments
                 missing_imports.append(import_line)      
         if missing_imports:
             script = "\n".join(missing_imports) + "\n\n" + script
+        
+        # Ensure boilerplate exists if LLM provides only the class
         if "class Test" not in script and "def test_" not in script:
             script = f"""import unittest
+import os
+import tempfile
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -192,4 +193,3 @@ if __name__ == "__main__":
     unittest.main()
 """
         return script
-    
