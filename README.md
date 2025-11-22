@@ -18,6 +18,12 @@ The **Autonomous QA Agent** is an intelligent automation tool designed to accele
 
 ## System Architecture
 
+- **Frontend:** streamlit  
+  [Autonomous qa agent](https://autonomous-agent.streamlit.app/)
+
+- **Backend:** hugging face  
+  [API](https://your-backend-url.com/api)
+
 ```
                 ┌──────────────────────────────────────────────────┐
                 │                     Streamlit UI                 │
