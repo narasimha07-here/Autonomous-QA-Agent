@@ -1,7 +1,11 @@
 import streamlit as st
 import requests
+from dotenv import load_dotenv
+import os
 
-BACKEND_URL = "http://localhost:8000"
+load_dotenv()
+
+BACKEND_URL = os.environ["api"]
 
 st.set_page_config(
     page_title="Autonomous QA Agent",
