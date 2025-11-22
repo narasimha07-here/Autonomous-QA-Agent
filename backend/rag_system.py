@@ -103,7 +103,11 @@ class RAGSystem:
         if not self.retriever:
             raise ValueError("Knowledge base not built. Please build it first.")
         relevant_docs = self.retriever.invoke(question)
-        context = "\n\n".join([doc.page_content for doc in relevant_docs])
+        context_parts = []
+        for doc in relevant_docs:
+            source_name = doc.metadata.get("source", "Unknown_Source")
+            context_parts.append(f"[SOURCE: {source_name}]\n{doc.page_content}")
+        context = "\n\n".join(context_parts)
         return context
     
     def generate_response(self, question: str) -> str:
