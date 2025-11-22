@@ -19,3 +19,4 @@ pydantic
 python-dotenv
 huggingface-hub
 sentence-transformers
+webdriver-manager
